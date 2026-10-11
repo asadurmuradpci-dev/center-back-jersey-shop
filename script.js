@@ -101,7 +101,27 @@ function makeOrder(formData){
 }
 form.addEventListener("submit",async e=>{
   e.preventDefault();
-  if(!form.reportValidity())return;
+  if(!form.reportValidity())return;  try{
+    const o=makeOrder(new FormData(form));
+    const lines=[
+      "নতুন অর্ডার ⚽",
+      "জার্সি: "+o.productName,
+      "সাইজ: "+o.size,
+      "পরিমাণ: "+o.quantity,
+      "নাম: "+o.customerName,
+      "মোবাইল: "+o.phone,
+      "ঠিকানা: "+o.address,
+      "নোট: "+(o.note||"-"),
+      "মোট (ডেলিভারি চার্জ ছাড়া): ৳"+o.subtotal,
+      "পেমেন্ট: Cash on Delivery",
+      "অর্ডার নং: "+o.orderId
+    ];
+    setStatus("WhatsApp খুলছে… মেসেজটি Send করলে অর্ডার আমাদের কাছে পৌঁছাবে।","success");
+    window.location.href="https://wa.me/8801575820162?text="+encodeURIComponent(lines.join("\n"));
+  }catch(err){
+    setStatus(err.message||"সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।","error");
+  }
+  return;
   if(!selectedProduct)return;
   const submit=document.getElementById("submitOrder");
   submit.disabled=true;submit.textContent="অর্ডার পাঠানো হচ্ছে…";
