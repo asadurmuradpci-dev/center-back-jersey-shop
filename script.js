@@ -101,7 +101,8 @@ function makeOrder(formData){
 }
 form.addEventListener("submit",async e=>{
   e.preventDefault();
-  if(!form.reportValidity())return;  try{
+  if(!form.reportValidity())return;
+  try{
     const o=makeOrder(new FormData(form));
     const lines=[
       "নতুন অর্ডার ⚽",
